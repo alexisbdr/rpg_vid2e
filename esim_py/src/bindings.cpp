@@ -11,7 +11,7 @@ PYBIND11_MODULE(esim_py, m) {
     m.doc() = "ESIM bindings";
 
     py::class_<EventSimulator>(m, "EventSimulator")
-        .def(py::init<float,float,float,float,bool>())
+        .def(py::init<float,float,float,float,bool,float,float>())
         .def("generateFromFolder", &EventSimulator::generateFromFolder, py::return_value_policy::reference_internal)
         .def("generateFromVideo", &EventSimulator::generateFromVideo, py::return_value_policy::reference_internal)
         .def("generateFromStampedImageSequence", &EventSimulator::generateFromStampedImageSequence, py::return_value_policy::reference_internal)

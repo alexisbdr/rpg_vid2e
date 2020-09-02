@@ -13,9 +13,12 @@ EventSimulator::EventSimulator(float contrast_threshold_pos,
                                float contrast_threshold_neg,
                                float refractory_period,
                                float log_eps,
-                               bool use_log_img)
+                               bool use_log_img,
+                               float sigma_cp,
+                               float sigma_cn)
     : contrast_threshold_pos_(contrast_threshold_pos), contrast_threshold_neg_(contrast_threshold_neg),
-    refractory_period_(refractory_period), log_eps_(log_eps), use_log_img_(use_log_img), is_initialized_(false)
+    refractory_period_(refractory_period), log_eps_(log_eps), use_log_img_(use_log_img), is_initialized_(false), 
+    sigma_cp_(sigma_cp), sigma_cn_(sigma_cn)
 {
 
 }
@@ -184,7 +187,16 @@ void EventSimulator::imageCallback(const cv::Mat& img, double time, std::vector<
             {
                 float pol = (itdt >= it) ? +1.0 : -1.0;
                 float C = (pol > 0) ? contrast_threshold_pos_ : contrast_threshold_neg_;
-                
+
+                //Noise simulation alexisbdr
+                float sigma_C = (pol > 0) ? sigma_cp_ : sigma_cn_;
+                if (sigma_C > 0)
+                {
+                    C += sampleNormalDistribution<float>(false, 0, sigma_C);
+                    constexpr float minimum_constrast_threshold = 0.01;
+                    C = std::max(minimum_constrast_threshold, C);
+                }
+
                 float curr_cross = prev_cross;
                 bool all_crossings = false;
       

@@ -40,7 +40,9 @@ public:
                  float contrast_threshold_neg, 
                  float refractory_period, 
                  float log_eps,
-                 bool use_log_img);
+                 bool use_log_img,
+                 float sigma_cp,
+                 float sigma_cn);
 
   Eigen::MatrixXd generateFromFolder(std::string image_folder, std::string timestamps_file_path);
   Eigen::MatrixXd generateFromVideo(std::string video_path, std::string timestamps_file_path);
@@ -50,13 +52,17 @@ public:
                      float contrast_threshold_neg,
                      float refractory_period,
                      float log_eps,
-                     bool use_log_img)
+                     bool use_log_img,
+                     float sigma_cp,
+                     float sigma_cn)
   {
     contrast_threshold_pos_ = contrast_threshold_pos;
     contrast_threshold_neg_ = contrast_threshold_neg;
     refractory_period_ = refractory_period;
     log_eps_ = log_eps;
     use_log_img_ = use_log_img;
+    sigma_cp_ = sigma_cp;
+    sigma_cn_ = sigma_cn;
   }
 
 private:
@@ -96,6 +102,8 @@ private:
   float refractory_period_;
   float log_eps_;
   bool use_log_img_;
+  float sigma_cp_;
+  float sigma_cn_;
 
   bool is_initialized_;
   double current_time_;
@@ -105,3 +113,18 @@ private:
   int image_height_;
   int image_width_;
 };
+
+// https://github.com/uzh-rpg/ze_oss/blob/master/ze_common/include/ze/common/random.hpp
+//------------------------------------------------------------------------------
+//! @return Sample from normal distribution (real-valued).
+template<typename T>
+T sampleNormalDistribution(
+    bool deterministic = false,
+    T mean  = T{0.0},
+    T sigma = T{1.0})
+{
+  static std::mt19937 gen_nondeterministic(std::random_device{}());
+  static std::mt19937 gen_deterministic(0);
+  auto dist = std::normal_distribution<T>(mean, sigma);
+  return deterministic ? dist(gen_deterministic) : dist(gen_nondeterministic);
+}
