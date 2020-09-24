@@ -81,11 +81,11 @@ Eigen::MatrixXd EventSimulator::generateFromStampedImageSequence(std::vector<std
             throw std::runtime_error("Timestamps must be sorted in ascending order.");
 
         img = cv::imread(image_paths[i]);
-        cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
 
         if(img.empty()) 
             throw std::runtime_error("unable to open the image " + image_paths[i]);
 
+        cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
         img.convertTo(img, CV_32F, 1.0/255);
 
         log_img = img;
@@ -103,7 +103,7 @@ Eigen::MatrixXd EventSimulator::generateFromStampedImageSequence(std::vector<std
     return vec_to_eigen_matrix(events_vec);
 }
 
-
+/**
 Eigen::MatrixXd EventSimulator::generateFromFolder(std::string image_folder, std::string timestamps_file_path)
 {
     std::vector<std::string> image_files;
@@ -145,7 +145,7 @@ Eigen::MatrixXd EventSimulator::generateFromFolder(std::string image_folder, std
 
     return vec_to_eigen_matrix(events_vec);
 }
-
+**/
 
 void EventSimulator::init(const cv::Mat &img, double time)
 {

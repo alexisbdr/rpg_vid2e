@@ -1,11 +1,11 @@
 #pragma once
 
+#include <random>
 #include <vector>
 
-#include <boost/filesystem.hpp>
 #include <Eigen/Core>
 #include <opencv2/core/core.hpp>
-
+//#include <filesystem.hpp>
 
 struct Event
 {
@@ -44,7 +44,7 @@ public:
                  float sigma_cp,
                  float sigma_cn);
 
-  Eigen::MatrixXd generateFromFolder(std::string image_folder, std::string timestamps_file_path);
+  //Eigen::MatrixXd generateFromFolder(std::string image_folder, std::string timestamps_file_path);
   Eigen::MatrixXd generateFromVideo(std::string video_path, std::string timestamps_file_path);
   Eigen::MatrixXd generateFromStampedImageSequence(std::vector<std::string> image_paths, std::vector<double> timestamps);
 
@@ -84,6 +84,7 @@ private:
   void imageCallback(const cv::Mat& img, double time, std::vector<Event>& events);
   void init(const cv::Mat &img, double time);  
    
+  /**
   void read_directory_from_path(const std::string& name, std::vector<std::string>& v)
   {
       boost::filesystem::path p(name);
@@ -96,6 +97,7 @@ private:
 
       std::sort(v.begin(), v.end());
   }  
+  **/
 
   float contrast_threshold_pos_; 
   float contrast_threshold_neg_;

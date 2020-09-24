@@ -1,0 +1,7 @@
+README.md
+setup.py
+esim_py.egg-info/PKG-INFO
+esim_py.egg-info/SOURCES.txt
+esim_py.egg-info/dependency_links.txt
+esim_py.egg-info/not-zip-safe
+esim_py.egg-info/top_level.txt
